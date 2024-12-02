@@ -2,13 +2,22 @@
   "name": "m6",
   "version": "1.0.0",
   "description": "Retos del módulo 6 Codenotch",
+<<<<<<< HEAD
   "main": "index.js",
+=======
+  "main": "reto.js",
+>>>>>>> dia4
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+>>>>>>> dia4
     "mongoose": "^8.8.3"
   }
 }
