@@ -188,40 +188,57 @@ function putPhotos(request, response) {
 // deletephotos("maria222", "rosas");
 
 
+
+
+
+
+
+// • DEL /photos. Dado un usuario y un titulo de foto eliminar su foto.
+// • DEL /photos. Dado un usuario eliminar todas sus fotos.
+
+//Por tanto: si ptitle existe borro una si no borro todas 
+
+
 function deletePhotos(request, response) {
     const username = request.body.username;
     const ptitle = request.body.ptitle;
-    const deleteAll = request.body.deleteAll;
+    console.log(`Usuario: ${username}`);
+    console.log(`Título de la foto: ${ptitle}`);
 
-    PhotosModel.deleteOne({ username: username, ptitle: ptitle })
-    .then((result) => {
-        if (result.deletedCount > 0) {
-            response.send({ message: "Foto borrada", result });
-        } else {
-            if (deleteAll) {
-                PhotosModel.deleteMany({ username: username })
-                .then((items) => {
-                    if (items.deletedCount > 0) {
-                        response.send({ message: "Fotos borradas", deletedCount: items.deletedCount });
-                    } else {
-                        response.send({ message: "No se borró ninguna foto" });
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error al eliminar las fotos", error);
-                    response.status(500).send({ error: "Error al borrar las fotos" });
-                });
-            } else {
-                response.send({ message: "Foto no borrada" });
-            }
-        }
-    })
-    .catch((error) => {
-        console.error("Error al eliminar la foto", error);
-        response.status(500).send({ error: "Error al eliminar la foto" });
-    });
+    if (ptitle) {
+        PhotosModel.deleteOne({ username: username, ptitle: ptitle })
+            .then((result) => {
+                if (result.deletedCount > 0) {
+                    console.log("Foto borrada");
+                    console.log(result);
+                    response.send({ message: "Foto borrada", result });
+                } else {
+                    console.log("No se encontró ninguna foto para borrar");
+                    response.send({ message: "No se encontró foto para borrar" });
+                }
+            })
+            .catch((error) => {
+                console.error("Error al eliminar la foto", error);
+                response.status(500).send({ error: "Error al eliminar la foto" });
+            });
+    } else {
+        PhotosModel.deleteMany({ username: username })
+            .then((items) => {
+                if (items.deletedCount > 0) {
+                    console.log("Todas las fotos borradas");
+                    console.log(items);
+                    response.send({ message: "Todas las fotos borradas", deletedCount: items.deletedCount });
+                } else {
+                    console.log("No se borró ninguna foto");
+                    response.send({ message: "No se borró ninguna foto" });
+                }
+            })
+            .catch((error) => {
+                console.error("Error al borrar las fotos", error);
+                response.status(500).send({ error: "Error al borrar las fotos" });
+            });
+    }
 }
-
 
 
 module.exports = {getPhotos, postPhotos, putPhotos, deletePhotos};
@@ -230,28 +247,28 @@ module.exports = {getPhotos, postPhotos, putPhotos, deletePhotos};
 
 // versiones previas
 
-// function deletePhotos(request, response) {
-//     const username = request.body.username; // Obtener el username del cuerpo de la solicitud
-//     const ptitle = request.body.ptitle; // Obtener el título de la foto del cuerpo de la solicitud
-//     console.log(username);
-//     console.log(ptitle);
+function deletePhotos(request, response) {
+    const username = request.body.username; // Obtener el username del cuerpo de la solicitud
+    const ptitle = request.body.ptitle; // Obtener el título de la foto del cuerpo de la solicitud
+    console.log(username);
+    console.log(ptitle);
 
-//     PhotosModel.deleteOne({ username: username, ptitle: ptitle })
-//     .then((result) => {
-//         if (result.deletedCount > 0) { // Verificar si se eliminó algún documento
-//             console.log("Imagen borrada");
-//             console.log(result);
-//             response.send({ message: "Imagen borrada", result });
-//         } else {
-//             console.log("Imagen no borrada");
-//             response.send({ message: "Imagen no borrada" });
-//         }
-//     })
-//     .catch((error) => {
-//         console.error("Error al eliminar la imagen", error);
-//         response.status(500).send({ error: "Error al eliminar la imagen" });
-//     });
-// }
+    PhotosModel.deleteOne({ username: username, ptitle: ptitle })
+    .then((result) => {
+        if (result.deletedCount > 0) { // Verificar si se eliminó algún documento
+            console.log("Imagen borrada");
+            console.log(result);
+            response.send({ message: "Imagen borrada", result });
+        } else {
+            console.log("Imagen no borrada");
+            response.send({ message: "Imagen no borrada" });
+        }
+    })
+    .catch((error) => {
+        console.error("Error al eliminar la imagen", error);
+        response.status(500).send({ error: "Error al eliminar la imagen" });
+    });
+}
 
 
 // // • Eliminar todas las Fotos:
@@ -277,23 +294,57 @@ module.exports = {getPhotos, postPhotos, putPhotos, deletePhotos};
 // // deletephotos("maria123");
 
 
-// function deletePhotos2(request, response) {
-//     const username = request.body.username; // Obtener el username del cuerpo de la solicitud
-//     console.log(username);
+function deletePhotos2(request, response) {
+    const username = request.body.username; // Obtener el username del cuerpo de la solicitud
+    console.log(username);
 
-//     PhotosModel.deleteMany({ username: username })
-//     .then((items) => {
-//         if (items.deletedCount > 0) { // Verificar si se eliminaron fotos
-//             console.log("Fotos borradas");
-//             console.log(items);
-//             response.send({ message: "Fotos borradas", deletedCount: items.deletedCount });
+    PhotosModel.deleteMany({ username: username })
+    .then((items) => {
+        if (items.deletedCount > 0) { // Verificar si se eliminaron fotos
+            console.log("Fotos borradas");
+            console.log(items);
+            response.send({ message: "Fotos borradas", deletedCount: items.deletedCount });
+        } else {
+            console.log("No se borró ninguna imagen");
+            response.send({ message: "No se borró ninguna foto" });
+        }
+    })
+    .catch((error) => {
+        console.error("Error al borrar las fotos", error);
+        response.status(500).send({ error: "Error al borrar las fotos" });
+    });
+}
+
+// function deletePhotos(request, response) {
+//     const username = request.body.username;
+//     const ptitle = request.body.ptitle;
+//     const deleteAll = request.body.deleteAll;
+
+//     PhotosModel.deleteOne({ username: username, ptitle: ptitle })
+//     .then((result) => {
+//         if (result.deletedCount > 0) {
+//             response.send({ message: "Foto borrada", result });
 //         } else {
-//             console.log("No se borró ninguna imagen");
-//             response.send({ message: "No se borró ninguna foto" });
+//             if (deleteAll) {
+//                 PhotosModel.deleteMany({ username: username })
+//                 .then((items) => {
+//                     if (items.deletedCount > 0) {
+//                         response.send({ message: "Fotos borradas", deletedCount: items.deletedCount });
+//                     } else {
+//                         response.send({ message: "No se borró ninguna foto" });
+//                     }
+//                 })
+//                 .catch((error) => {
+//                     console.error("Error al eliminar las fotos", error);
+//                     response.status(500).send({ error: "Error al borrar las fotos" });
+//                 });
+//             } else {
+//                 response.send({ message: "Foto no borrada" });
+//             }
 //         }
 //     })
 //     .catch((error) => {
-//         console.error("Error al borrar las fotos", error);
-//         response.status(500).send({ error: "Error al borrar las fotos" });
+//         console.error("Error al eliminar la foto", error);
+//         response.status(500).send({ error: "Error al eliminar la foto" });
 //     });
 // }
