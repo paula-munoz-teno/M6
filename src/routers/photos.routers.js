@@ -10,7 +10,6 @@ router.put("/photos", photosCtrl.putPhotos);
         
 router.delete("/photos", photosCtrl.deletePhotos);
 
-router.delete("/photos2", photosCtrl.deletePhotos2);
 module.exports = router;
 
 
